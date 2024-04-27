@@ -2,7 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 const port = process.env.port || 5000;
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId, } = require('mongodb');
 //Middleware:
 app.use(cors())
 app.use(express.json())
@@ -31,7 +31,7 @@ async function run() {
     // Post
     app.post('/artAndCraft', async(req, res) => {
       const newArtAndCraft = req.body
-      console.log(newArtAndCraft)
+      // console.log(newArtAndCraft)
       const result = await artCraftCollection.insertOne(newArtAndCraft)
       res.send(result)
     })
@@ -42,6 +42,64 @@ async function run() {
       const result = await cursor.toArray()
       res.send(result)
     })
+
+    // get spacific one data 
+    app.get('/artAndCraft/:id', async(req, res) => {
+      // console.log(req.params.id)
+        const id = req.params.id;
+        const query = {_id : new ObjectId(id)}
+        const result = await artCraftCollection.findOne(query)
+        res.send(result)
+    })
+
+    // get my add items :
+    app.get('/myCraftItem/:email', async(req, res) => {
+      // console.log(req.params.email)
+        const result = await artCraftCollection.find({ email : req.params.email}).toArray()
+        // console.log(result)
+        res.send(result);
+    })
+
+    // landsCaps: 
+    app.get('/landsCaps/:subcategory', async(req, res) => {
+      const result = await artCraftCollection.find({subcategory : req.params.subcategory}).toArray()
+      console.log(result)
+      res.send(result)
+    })
+
+    // update item :
+    app.put('/artAndCraft/:id', async(req, res) => {
+      const id = req.params.id;
+      const filter = { _id : new ObjectId(id)}
+      const options = { upsert : true}
+      const updateArtAndCraft = req.body
+      const item = {
+        $set : {
+          itemName: updateArtAndCraft.itemName,
+          subcategory: updateArtAndCraft.subcategory, 
+          customization: updateArtAndCraft.customization,
+          stockStatus: updateArtAndCraft.stockStatus,
+          photo: updateArtAndCraft.photo,
+          time: updateArtAndCraft.time, 
+          price: updateArtAndCraft.price,
+          rating: updateArtAndCraft.rating,
+          description: updateArtAndCraft.description
+        }
+      }
+      const result = await artCraftCollection.updateOne(filter, item, options)
+      // console.log(result)
+      res.send(result)
+    })
+
+    // Delete item: 
+    
+    app.delete('/artAndCraft/:id', async(req, res) => {
+      const id = req.params.id;
+      const query = {_id : new ObjectId(id)}
+      const result = await artCraftCollection.deleteOne(query)
+      res.send(result)
+    })
+
 
 
     // Send a ping to confirm a successful connection
