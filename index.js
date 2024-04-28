@@ -52,19 +52,21 @@ async function run() {
         res.send(result)
     })
 
+    // get singleData :
+    app.get('/singleData/:id', async(req, res) => {
+      const id = req.params.id
+      console.log('single id', id)
+      const query = {_id : new ObjectId(id)}
+      const result = await artCraftCollection.findOne(query)
+      res.send(result)
+    })
+
     // get my add items :
     app.get('/myCraftItem/:email', async(req, res) => {
       // console.log(req.params.email)
         const result = await artCraftCollection.find({ email : req.params.email}).toArray()
         // console.log(result)
         res.send(result);
-    })
-
-    // landsCaps: 
-    app.get('/landsCaps/:subcategory', async(req, res) => {
-      const result = await artCraftCollection.find({subcategory : req.params.subcategory}).toArray()
-      console.log(result)
-      res.send(result)
     })
 
     // update item :
@@ -99,6 +101,17 @@ async function run() {
       const result = await artCraftCollection.deleteOne(query)
       res.send(result)
     })
+
+    // get sub category data : 
+    // LandsCapes: 
+
+    app.get('/landCapes/:subcategory', async(req, res) => {
+      console.log('checking',req.params.subcategory)
+      const result = await artCraftCollection.find({subcategory : req.params.subcategory}).toArray()
+      res.send(result)
+    })
+
+    
 
 
 
