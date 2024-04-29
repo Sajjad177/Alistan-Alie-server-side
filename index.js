@@ -3,14 +3,14 @@ const cors = require('cors')
 const app = express()
 const port = process.env.port || 5000;
 const { MongoClient, ServerApiVersion, ObjectId, } = require('mongodb');
+require("dotenv").config();
 //Middleware:
 app.use(cors())
 app.use(express.json())
 
-//pass: WlvOyb8In6cT6Plq
 
-const uri = "mongodb+srv://assignment-10:WlvOyb8In6cT6Plq@cluster0.uchbkzq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-// const uri = `mongodb+srv://${process.env.DB_USER}:WlvOyb8In6cT6Plq@cluster0.uchbkzq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+// const uri = "mongodb+srv://assignment-10:WlvOyb8In6cT6Plq@cluster0.uchbkzq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.uchbkzq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -27,6 +27,7 @@ async function run() {
     await client.connect();
 
     const artCraftCollection = client.db("artAndCraftDB").collection("artAndCraft")
+    const subCategoryCollection = client.db("artAndCraftDB").collection("categories")
 
     // Post
     app.post('/artAndCraft', async(req, res) => {
@@ -102,14 +103,15 @@ async function run() {
       res.send(result)
     })
 
-    // get sub category data : 
-    // LandsCapes: 
-
-    app.get('/landCapes/:subcategory', async(req, res) => {
-      console.log('checking',req.params.subcategory)
-      const result = await artCraftCollection.find({subcategory : req.params.subcategory}).toArray()
+    
+    //-------------------------
+    app.get('/categories', async(req, res) => {
+      const cursor = subCategoryCollection.find();
+      const result = await cursor.toArray()
+      console.log(result)
       res.send(result)
     })
+    
 
     
 
