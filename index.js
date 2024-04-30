@@ -32,7 +32,6 @@ async function run() {
     // Post
     app.post('/artAndCraft', async(req, res) => {
       const newArtAndCraft = req.body
-      // console.log(newArtAndCraft)
       const result = await artCraftCollection.insertOne(newArtAndCraft)
       res.send(result)
     })
@@ -64,9 +63,7 @@ async function run() {
 
     // get my add items :
     app.get('/myCraftItem/:email', async(req, res) => {
-      // console.log(req.params.email)
         const result = await artCraftCollection.find({ email : req.params.email}).toArray()
-        // console.log(result)
         res.send(result);
     })
 
@@ -90,31 +87,16 @@ async function run() {
         }
       }
       const result = await artCraftCollection.updateOne(filter, item, options)
-      // console.log(result)
       res.send(result)
     })
 
     // Delete item: 
-    
     app.delete('/artAndCraft/:id', async(req, res) => {
       const id = req.params.id;
       const query = {_id : new ObjectId(id)}
       const result = await artCraftCollection.deleteOne(query)
       res.send(result)
     })
-
-    
-    //-------------------------
-    app.get('/categories', async(req, res) => {
-      const cursor = subCategoryCollection.find();
-      const result = await cursor.toArray()
-      console.log(result)
-      res.send(result)
-    })
-    
-
-    
-
 
 
     // Send a ping to confirm a successful connection
