@@ -45,7 +45,6 @@ async function run() {
 
     // get spacific one data 
     app.get('/artAndCraft/:id', async(req, res) => {
-      // console.log(req.params.id)
         const id = req.params.id;
         const query = {_id : new ObjectId(id)}
         const result = await artCraftCollection.findOne(query)
