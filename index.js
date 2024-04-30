@@ -29,7 +29,7 @@ async function run() {
     const artCraftCollection = client.db("artAndCraftDB").collection("artAndCraft")
     const subCategoryCollection = client.db("artAndCraftDB").collection("categories")
 
-    // Post
+    // Post to database:
     app.post('/artAndCraft', async(req, res) => {
       const newArtAndCraft = req.body
       const result = await artCraftCollection.insertOne(newArtAndCraft)
@@ -116,5 +116,5 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Example port ${port}`)
 })
