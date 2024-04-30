@@ -2,13 +2,13 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 require("dotenv").config();
-const port = process.env.port || 5173;
+const port = process.env.port || 5000;
 const { MongoClient, ServerApiVersion, ObjectId, } = require('mongodb');
 
 //Middleware:
 app.use(cors(
   {
-    origin: ["http:/localhost:5000", "https://assignment-10-ea7c5.web.app/", "https://assignment-10-ea7c5.firebaseapp.com/"]
+    origin: "*"
   }
 ))
 app.use(express.json())
