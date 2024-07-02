@@ -27,7 +27,7 @@
 ## How to Clone and Run the Project Locally : 
 
 1. **Clone the repository:**
-   - First, you need to clone the **client** and **server side**. Open your terminal and type:
+   - First, you need to clone the **server side**. Open your terminal and type:
      ```bash
      git clone https://github.com/YOUR-USERNAME/YOUR-REPOSITORY
      ```
